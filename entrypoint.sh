@@ -1,22 +1,32 @@
 #!/bin/bash
 set -x
 
-CERT_FILE=$(awk '/^tls_server_cert:/{ print $2 }' /etc/imapd.conf)
-CERT_KEY_FILE=$(awk '/^tls_server_key:/{ print $2 }' /etc/imapd.conf)
-CA_FILE=$(awk '/^tls_client_ca_file:/{ print $2 }' /etc/imapd.conf)
-
-if [ ! -e "${CERT_FILE}" ] || [ ! -e "${CERT_KEY_FILE}" ] || [ ! -e "${CA_FILE}" ];
+if [ ! -e "/etc/imapd.conf" ];
 then
-    /usr/bin/sscg                          \
-        --package cyrus-imapd              \
-        --cert-file "${CERT_FILE}"         \
-        --cert-key-file "${CERT_KEY_FILE}" \
-        --ca-file "${CA_FILE}"
+    cat /etc/imapd.conf.d/*.conf > /etc/imapd.conf
+fi
+
+if [ ! -e "/etc/cyrus.conf" ];
+then
+    cat /etc/cyrus.conf.d/*.conf > /etc/cyrus.conf
 fi
 
 if [ -n "${CYRUS_PASSWORD}" ];
 then
     echo "cyrus:${CYRUS_PASSWORD}" | chpasswd
+fi
+
+cert_file=$(awk '/^tls_server_cert:/{ print $2 }' /etc/imapd.conf)
+cert_key_file=$(awk '/^tls_server_key:/{ print $2 }' /etc/imapd.conf)
+ca_file=$(awk '/^tls_client_ca_file:/{ print $2 }' /etc/imapd.conf)
+
+if [ ! -e "${cert_file}" ] || [ ! -e "${cert_key_file}" ] || [ ! -e "${ca_file}" ];
+then
+    /usr/bin/sscg                          \
+        --package cyrus-imapd              \
+        --cert-file "${cert_file}"         \
+        --cert-key-file "${cert_key_file}" \
+        --ca-file "${ca_file}"
 fi
 
 exec "$@"
