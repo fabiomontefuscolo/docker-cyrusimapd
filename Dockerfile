@@ -18,12 +18,7 @@ RUN yum install -y                                                \
         cyrus-sasl-lib                                            \
         cyrus-sasl-md5                                            \
         glibc-langpack-en                                         \
-    && yum --enablerepo='*' clean all                             \
-    && /usr/bin/sscg                                              \
-        --package cyrus-imapd                                     \
-        --cert-file /etc/pki/cyrus-imapd/cyrus-imapd.pem          \
-        --cert-key-file /etc/pki/cyrus-imapd/cyrus-imapd-key.pem  \
-        --ca-file /etc/pki/cyrus-imapd/cyrus-imapd-ca.pem
+    && yum --enablerepo='*' clean all
 
 EXPOSE 110 119 143 406 563 993 995 1109 2003 2004 2005 3905 4190
 
