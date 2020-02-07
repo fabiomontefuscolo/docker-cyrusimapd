@@ -33,9 +33,8 @@ RUN mkdir -p /etc/imapd.conf.d                                                  
         echo '$Umask 0022';                                                              \
         echo 'include(file="/etc/rsyslog.d/*.conf" mode="optional")';                    \
         echo 'module(load="immark")';                                                    \
-        echo 'module(load="imuxsock")';                                                  \
         echo 'module(load="imklog")';                                                    \
-        echo '*.emerg							:omusrmsg:*';                            \
+        echo '*.emerg :omusrmsg:*';                                                      \
     } > /etc/rsyslog.conf                                                                \
     && {                                                                                 \
         echo 'module(load="imtcp")';                                                     \
@@ -46,8 +45,7 @@ RUN mkdir -p /etc/imapd.conf.d                                                  
         echo 'input(type="imuxsock" Socket="/run/rsyslog/dev/log" CreatePath="on")';     \
         echo '$ModLoad omstdout.so';                                                     \
         echo '*.* :omstdout:';                                                           \
-    } > /etc/rsyslog.d/docker-cyrus.conf                                                 \
-    && ln -sf /run/rsyslog/dev/log /dev/log
+    } > /etc/rsyslog.d/docker-cyrus.conf
 
 EXPOSE 110 119 143 406 563 993 995 1109 2003 2004 2005 3905 4190
 VOLUME /etc/imapd.conf.d /etc/cyrus.conf.d /etc/saslauthd.conf.d /run
@@ -56,5 +54,5 @@ COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
 CMD ["/usr/libexec/cyrus-imapd/cyrus-master"]
-#CMD ["rsyslogd", "-n", "-f", "/etc/rsyslogd.conf", "-i", "/var/run/rsyslogd.pid"]
+#CMD ["rsyslogd", "-n", "-f", "/etc/rsyslogd.conf", "-i", "/run/rsyslogd.pid"]
 #CMD ["/usr/sbin/saslauthd", "-V", "-d", "-m", "/run/saslauthd", "-a", "ldap"]

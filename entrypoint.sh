@@ -21,6 +21,13 @@ then
     echo "cyrus:${CYRUS_PASSWORD}" | chpasswd
 fi
 
+if [ -e "${SYSLOG_SOCK}" ];
+then
+    ln -sf "${SYSLOG_SOCK}" /dev/log
+else
+    ln -sf /run/rsyslog/dev/log /dev/log
+fi
+
 cert_file=$(awk '/^tls_server_cert:/{ print $2 }' /etc/imapd.conf)
 cert_key_file=$(awk '/^tls_server_key:/{ print $2 }' /etc/imapd.conf)
 ca_file=$(awk '/^tls_client_ca_file:/{ print $2 }' /etc/imapd.conf)
