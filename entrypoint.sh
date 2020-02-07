@@ -11,6 +11,11 @@ then
     cat /etc/cyrus.conf.d/*.conf > /etc/cyrus.conf
 fi
 
+if [ ! -e "/etc/saslauthd.conf" ];
+then
+    cat /etc/saslauthd.conf.d/*.conf > /etc/saslauthd.conf
+fi
+
 if [ -n "${CYRUS_PASSWORD}" ];
 then
     echo "cyrus:${CYRUS_PASSWORD}" | chpasswd
