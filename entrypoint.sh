@@ -39,6 +39,10 @@ then
         --cert-file "${cert_file}"         \
         --cert-key-file "${cert_key_file}" \
         --ca-file "${ca_file}"
+
+    chown cyrus ${cert_file}
+    chown cyrus ${cert_key_file}
+    chown cyrus ${ca_file}
 fi
 
 exec "$@"
