@@ -28,6 +28,9 @@ else
     ln -sf /run/rsyslog/dev/log /dev/log
 fi
 
+mkdir -p /run/cyrus
+chown -R cyrus:cyrus /run/cyrus
+
 cert_file=$(awk '/^tls_server_cert:/{ print $2 }' /etc/imapd.conf)
 cert_key_file=$(awk '/^tls_server_key:/{ print $2 }' /etc/imapd.conf)
 ca_file=$(awk '/^tls_client_ca_file:/{ print $2 }' /etc/imapd.conf)
@@ -45,4 +48,4 @@ then
     chown cyrus ${ca_file}
 fi
 
-exec "$@"
+"$@"
