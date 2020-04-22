@@ -28,7 +28,7 @@ else
     ln -sf /run/rsyslog/dev/log /dev/log
 fi
 
-mkdir -p /run/cyrus
+mkdir -p /run/cyrus/socket
 chown -R cyrus:cyrus /run/cyrus
 
 cert_file=$(awk '/^tls_server_cert:/{ print $2 }' /etc/imapd.conf)

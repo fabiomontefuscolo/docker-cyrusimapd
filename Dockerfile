@@ -53,6 +53,4 @@ VOLUME /etc/imapd.conf.d /etc/cyrus.conf.d /etc/saslauthd.conf.d /run
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["/usr/libexec/cyrus-imapd/cyrus-master"]
-#CMD ["rsyslogd", "-n", "-f", "/etc/rsyslogd.conf", "-i", "/run/rsyslogd.pid"]
-#CMD ["/usr/sbin/saslauthd", "-V", "-d", "-m", "/run/saslauthd", "-a", "ldap"]
+CMD ["/usr/libexec/cyrus-imapd/cyrus-master", "-M", "/etc/cyrus.conf", "-C", "/etc/imapd.conf"]
